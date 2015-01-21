@@ -4,3 +4,9 @@
       %title= 'Shopper'
   %body
     %h1 Grocery Shopper
+
+    %form{:action =>"/", :method => "post"}
+      %textarea{:name => "item", :placeholder => "Enter grocery item"}
+      %input{:type => "submit", :value => "Add Item to List"}
+
+    %h2 Grocery Targets
