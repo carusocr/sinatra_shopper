@@ -15,3 +15,6 @@
         - $search_items.each do |i|
           %tr
             %td=i
+    %br
+    %form{:action =>"/shop", :method => "post"}
+      %input{:type => "submit", :value => "Shop!"}

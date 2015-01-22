@@ -13,8 +13,20 @@ require 'capybara'
 
 $search_items=[]
 
+def shop_fer_stuff
+  $search_items.each do |i|
+    sleep 3
+    puts "shopping for #{i}...\n"
+  end
+end
+
 get '/' do
   haml :home
+end
+
+post '/shop' do
+  shop_fer_stuff
+  redirect '/'
 end
 
 post '/' do
