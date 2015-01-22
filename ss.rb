@@ -11,16 +11,14 @@ require 'sinatra'
 require 'haml'
 require 'capybara'
 
-search_items=[]
+$search_items=[]
 
 get '/' do
   haml :home
 end
 
 post '/' do
-  search_items << params[:item]
-  puts search_items.inspect
-  @si = search_items
-  puts @si.inspect
+  $search_items << params[:item]
+  puts $search_items.inspect
   redirect '/'
 end

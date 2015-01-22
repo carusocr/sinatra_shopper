@@ -10,3 +10,8 @@
       %input{:type => "submit", :value => "Add Item to List"}
 
     %h2 Grocery Targets
+    %table{:border => 1}
+      %tbody
+        - $search_items.each do |i|
+          %tr
+            %td=i
