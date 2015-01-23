@@ -9,12 +9,19 @@
       %textarea{:name => "item", :placeholder => "Enter grocery item"}
       %input{:type => "submit", :value => "Add Item to List"}
 
-    %h2 Grocery Targets
+    %h3 Grocery Targets
     %table{:border => 1}
       %tbody
         - $search_items.each do |i|
           %tr
             %td=i
     %br
+    %h3 Choose Stores
     %form{:action =>"/shop", :method => "post"}
+      Pathmark
+      %input{:type=>"checkbox", :name=>"pathmark", :value=>"1"}
+      %br
+      Superfresh
+      %input{:type=>"checkbox", :name=>"superfresh", :value=>"1"}
+      %br
       %input{:type => "submit", :value => "Shop!"}
