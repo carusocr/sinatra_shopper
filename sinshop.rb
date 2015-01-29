@@ -108,7 +108,10 @@ get '/' do
 end
 
 post '/shop' do
-  shop_fer_stuff
+  pathmark = params['pathmark']
+  superfresh = params['superfresh']
+  puts pathmark, superfresh
+  #shop_fer_stuff
   redirect '/'
 end
 
@@ -117,3 +120,12 @@ post '/' do
   puts $search_items.inspect
   redirect '/'
 end
+
+=begin
+shop = Shopper::AcmeFroGro.new
+shop.get_results(acme,acme_prices)
+shop.get_results(frogro,frogro_prices)
+shop = Shopper::APS.new
+shop.get_results(pathmark,pathmark_prices)
+shop.get_results(superfresh,superfresh_prices)
+=end
