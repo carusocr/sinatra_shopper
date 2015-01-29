@@ -19,11 +19,11 @@
     %h3 Choose Stores
     %form{:action =>"/shop", :method => "post"}
       Pathmark
-      %input{:type => "hidden", :name => "pathmark", :value => "0"}
-      %input{:type=>"checkbox", :name=>"pathmark", :value=>"1"}
+      %input{:type => "hidden", :name => "pathmark", :value => 0}
+      %input{:type=>"checkbox", :name=>"pathmark", :value=>1}
       %br
       Superfresh
-      %input{:type => "hidden", :name => "superfresh", :value => "0"}
-      %input{:type=>"checkbox", :name=>"superfresh", :value=>"1"}
+      %input{:type => "hidden", :name => "superfresh", :value => 0}
+      %input{:type=>"checkbox", :name=>"superfresh", :value=>1}
       %br
       %input{:type => "submit", :value => "Shop!"}

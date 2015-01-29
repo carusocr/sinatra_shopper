@@ -12,8 +12,8 @@ require 'haml'
 require 'capybara'
 
 Capybara.current_driver = :selenium #keeping it visual for now
-pathmark = 'http://pathmark.apsupermarket.com/view-circular?storenum=532#ad'
-pathmark_prices = Hash.new
+$pathmark_url = 'http://pathmark.apsupermarket.com/view-circular?storenum=532#ad'
+$pathmark_prices = Hash.new
 
 $search_items=[]
 $prices=[]
@@ -28,7 +28,7 @@ module Shopper
       searchterm = storename == 'acmemarkets' ? 'Search Weekly Ads' : 'Search Weekly Circular'
       visit(store)
       page.driver.browser.manage.window.resize_to(1000,1000)
-      $meaty_targets.each do |m|
+      $search_items.each do |m|
         page.fill_in(searchterm, :with => m)
         page.click_button('GO')
         lastpage = page.has_link?('Next Page') ? page.first(:xpath,"//a[contains(@title,'Page')]")[:title][/ of (\d+)/,1].to_i : 0
@@ -55,14 +55,14 @@ module Shopper
 
  
   end
-
+# add some breakpoints in here to troubleshoot 
   class APS #SuperFresh and Pathmark
     include Capybara::DSL
     def get_results(store,pricelist)
       storename = store[/http:\/\/(.+?)\./,1]
       visit(store)
       page.driver.browser.switch_to.frame(0)
-      $meaty_targets.each do |m|
+      $search_items.each do |m|
         #find(:xpath,"//input[@id='txtSearch']").set(m)
         page.fill_in('txtSearch', :with => m)
         puts "Looking for #{m}..."
@@ -97,10 +97,18 @@ def scan_price(storename, item_name, target_item, item_price)
 end
 
 def shop_fer_stuff
-  $search_items.each do |i|
-    sleep 3
-    puts "shopping for #{i}...\n"
+  if $pathmark == 1
+    shop = Shopper::APS.new
+    shop.get_results($pathmark_url,$pathmark_prices)
   end
+  if $superfresh == 1
+    shop = Shopper::APS.new
+    shop.get_results($superfresh,$superfresh_prices)
+  end
+  #$search_items.each do |i|
+  #  sleep 3
+  #  puts "shopping for #{i}...\n"
+  #end
 end
 
 get '/' do
@@ -108,10 +116,9 @@ get '/' do
 end
 
 post '/shop' do
-  pathmark = params['pathmark']
-  superfresh = params['superfresh']
-  puts pathmark, superfresh
-  #shop_fer_stuff
+  $pathmark = params['pathmark'].to_i
+  $superfresh = params['superfresh'].to_i
+  shop_fer_stuff
   redirect '/'
 end
 
