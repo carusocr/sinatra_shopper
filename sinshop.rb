@@ -55,7 +55,6 @@ module Shopper
 
  
   end
-# add some breakpoints in here to troubleshoot 
   class APS #SuperFresh and Pathmark
     include Capybara::DSL
     def get_results(store,pricelist)
@@ -84,6 +83,7 @@ module Shopper
         end
         sleep 1
       end
+      page.driver.browser.close
     end
   end
 
@@ -91,6 +91,7 @@ end
 
 def scan_price(storename, item_name, target_item, item_price)
  if item_name =~ /#{target_item} ?/ #added \W to eliminate 'roasted' etc.
+   # why isn't this printing?
    puts "#{storename}: #{item_name} for #{item_price}."
    $prices << ["#{storename}","#{item_name}","#{item_price}"]
  end
@@ -101,14 +102,11 @@ def shop_fer_stuff
     shop = Shopper::APS.new
     shop.get_results($pathmark_url,$pathmark_prices)
   end
-  if $superfresh == 1
-    shop = Shopper::APS.new
-    shop.get_results($superfresh,$superfresh_prices)
-  end
-  #$search_items.each do |i|
-  #  sleep 3
-  #  puts "shopping for #{i}...\n"
-  #end
+# need to add Superfresh vars
+#  if $superfresh == 1
+#    shop = Shopper::APS.new
+#    shop.get_results($superfresh,$superfresh_prices)
+#  end
 end
 
 get '/' do
@@ -124,11 +122,11 @@ end
 
 post '/' do
   $search_items << params[:item]
-  puts $search_items.inspect
   redirect '/'
 end
 
 =begin
+NOTES: why does window stay open after shopping?
 shop = Shopper::AcmeFroGro.new
 shop.get_results(acme,acme_prices)
 shop.get_results(frogro,frogro_prices)
