@@ -14,7 +14,7 @@ require 'capybara'
 Capybara.current_driver = :selenium #keeping it visual for now
 $pathmark_url = 'http://pathmark.apsupermarket.com/view-circular?storenum=532#ad'
 $pathmark_prices = Hash.new
-$superfresh = 'http://superfresh.apsupermarket.com/weekly-circular?storenum=747&brand=sf'
+$superfresh_url = 'http://superfresh.apsupermarket.com/weekly-circular?storenum=747&brand=sf'
 $superfresh_prices = Hash.new
 $acme = 'http://acmemarkets.mywebgrocer.com/Circular/Philadelphia-10th-and-Reed/BE0473057/Weekly/2/1'
 $acme_prices = Hash.new
@@ -89,7 +89,7 @@ module Shopper
         end
         sleep 1
       end
-      page.driver.browser.close
+        page.driver.quit()
     end
   end
 
@@ -109,7 +109,7 @@ def shop_fer_stuff
   end
   if $superfresh == 1
     shop = Shopper::APS.new
-    shop.get_results($superfresh,$superfresh_prices)
+    shop.get_results($superfresh_url,$superfresh_prices)
   end
 end
 
