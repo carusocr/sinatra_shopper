@@ -14,6 +14,13 @@ require 'capybara'
 Capybara.current_driver = :selenium #keeping it visual for now
 $pathmark_url = 'http://pathmark.apsupermarket.com/view-circular?storenum=532#ad'
 $pathmark_prices = Hash.new
+$superfresh = 'http://superfresh.apsupermarket.com/weekly-circular?storenum=747&brand=sf'
+$superfresh_prices = Hash.new
+$acme = 'http://acmemarkets.mywebgrocer.com/Circular/Philadelphia-10th-and-Reed/BE0473057/Weekly/2/1'
+$acme_prices = Hash.new
+$frogro = 'http://thefreshgrocer.shoprite.com/Circular/The-Fresh-Grocer-of-Walnut/E7E1123699/Weekly/2'
+$frogro_prices = Hash.new
+
 
 $search_items=[]
 $prices=[]
@@ -62,7 +69,6 @@ module Shopper
       visit(store)
       page.driver.browser.switch_to.frame(0)
       $search_items.each do |m|
-        #find(:xpath,"//input[@id='txtSearch']").set(m)
         page.fill_in('txtSearch', :with => m)
         puts "Looking for #{m}..."
         page.click_button('Search')
@@ -90,11 +96,10 @@ module Shopper
 end
 
 def scan_price(storename, item_name, target_item, item_price)
- if item_name =~ /#{target_item} ?/ #added \W to eliminate 'roasted' etc.
-   # why isn't this printing?
-   puts "#{storename}: #{item_name} for #{item_price}."
-   $prices << ["#{storename}","#{item_name}","#{item_price}"]
- end
+  if item_name =~ /#{target_item} ?/i #added \W to eliminate 'roasted' etc.
+    puts "Found #{item_name} for #{item_price}"    
+    $prices << ["#{storename}","#{item_name}","#{item_price}"]
+  end
 end
 
 def shop_fer_stuff
@@ -102,11 +107,10 @@ def shop_fer_stuff
     shop = Shopper::APS.new
     shop.get_results($pathmark_url,$pathmark_prices)
   end
-# need to add Superfresh vars
-#  if $superfresh == 1
-#    shop = Shopper::APS.new
-#    shop.get_results($superfresh,$superfresh_prices)
-#  end
+  if $superfresh == 1
+    shop = Shopper::APS.new
+    shop.get_results($superfresh,$superfresh_prices)
+  end
 end
 
 get '/' do
@@ -124,13 +128,3 @@ post '/' do
   $search_items << params[:item]
   redirect '/'
 end
-
-=begin
-NOTES: why does window stay open after shopping?
-shop = Shopper::AcmeFroGro.new
-shop.get_results(acme,acme_prices)
-shop.get_results(frogro,frogro_prices)
-shop = Shopper::APS.new
-shop.get_results(pathmark,pathmark_prices)
-shop.get_results(superfresh,superfresh_prices)
-=end
