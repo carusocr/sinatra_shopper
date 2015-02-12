@@ -1,30 +1,42 @@
 %html
   %head
-    %link{:rel => 'stylesheet', :href => 'css/bootstrap.css', :type => "text/css"}
+    %link{:rel=>"stylesheet", :href=>"css/bootstrap.css"}
     %meta{:charset=> "utf8"}
-      %title= 'Shopper'
+    %title= 'Shopper'
   %body
-    %h1 Grocery Shopper
+    .container-fluid
+      .jumbotron
+        %h1 AutoShopper
 
-    %form{:action =>"/", :method => "post"}
-      %textarea{:name => "item", :placeholder => "Enter grocery item"}
-      %input{:type => "submit", :value => "Add Item to List"}
+      %form{:action =>"/", :method => "post"}
+        %textarea{:name => "item", :placeholder => "Enter grocery item"}
+        %input{:type => "submit", :value => "Add Item to List"}
 
-    %h3 Grocery Targets
-    %table{:border => 1}
-      %tbody
-        - $search_items.each do |i|
-          %tr
-            %td=i
-    %br
+      %h3 Target Items
+      %br
+      %table{:border => 2}
+        %tbody
+          - $search_items.each do |i|
+            %tr
+              %td=i
+      %br
+  .container
     %h3 Choose Stores
-    %form{:action =>"/shop", :method => "post"}
-      Pathmark
-      %input{:type => "hidden", :name => "pathmark", :value => 0}
-      %input{:type=>"checkbox", :name=>"pathmark", :value=>1}
-      %br
-      Superfresh
-      %input{:type => "hidden", :name => "superfresh", :value => 0}
-      %input{:type=>"checkbox", :name=>"superfresh", :value=>1}
-      %br
-      %input{:type => "submit", :value => "Shop!"}
+    %form{:role => "form", :action=>"shop", :method=>"post"}
+      .checkbox
+        %label
+          %input{:type => "hidden", :name => "pathmark", :value => 0}
+          %input{:type=>"checkbox", :name=>"pathmark", :value=>1}
+          Pathmark
+      .checkbox
+        %label
+          %input{:type => "hidden", :name => "superfresh", :value => 0}
+          %input{:type=>"checkbox", :name=>"superfresh", :value=>1}
+          Super Fresh
+      .checkbox.disabled
+        %label
+          %input{:type => "hidden", :name => "frogro", :value => 0}
+          %input{:disabled=>"disabled", :type=>"checkbox", :name=>"frogro", :value=>1}
+          Fresh Grocer (currently disabled)
+        %br
+        %input{:type => "submit", :value => "Shop!"}
