@@ -13,12 +13,12 @@
         %input{:type => "submit", :value => "Add Item to List"}
 
       %h3 Target Items
-      %br
-      %table{:border => 2}
-        %tbody
-          - $search_items.each do |i|
-            %tr
-              %td=i
+      %div.panel.panel-default
+        %table.table.table-bordered
+          %tbody
+            - $search_items.each do |i|
+              %tr
+                %td=i
       %br
   .container
     %h3 Choose Stores
@@ -38,5 +38,6 @@
           %input{:type => "hidden", :name => "frogro", :value => 0}
           %input{:disabled=>"disabled", :type=>"checkbox", :name=>"frogro", :value=>1}
           Fresh Grocer (currently disabled)
+        %br
         %br
         %input{:type => "submit", :value => "Shop!"}
