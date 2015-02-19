@@ -5,6 +5,11 @@ Shopper home page should list...what?
 2. text box to accept search term. Each entry will populate the searchterm array.
 3. 'Shop!' button.
 
+*current buglist
+
+- Can't do the same operation twice, e.g. shop for 1 item at Pathmark. First time works,
+  second fails. Connection error is Errno::ECONNREFUSED at /shop.
+
 =end
 
 require 'sinatra'
@@ -89,14 +94,15 @@ module Shopper
         end
         sleep 1
       end
-        page.driver.quit()
+        #page.driver.quit()
+        page.driver.reset!()
     end
   end
 
 end
 
 def scan_price(storename, item_name, target_item, item_price)
-  if item_name =~ /#{target_item} ?/i #added \W to eliminate 'roasted' etc.
+  if item_name =~ /#{target_item}( |$)/i #added \W to eliminate 'roasted' etc.
     puts "Found #{item_name} for #{item_price}"    
     $prices << ["#{storename}","#{item_name}","#{item_price}"]
   end
