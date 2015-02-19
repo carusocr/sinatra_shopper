@@ -5,7 +5,14 @@ Shopper home page should list...what?
 2. text box to accept search term. Each entry will populate the searchterm array.
 3. 'Shop!' button.
 
-*current buglist
+* FEATURES TO ADD *
+
+- 'Clear Items' button
+- cleaner format 
+- 'Load Usual Suspects' button
+- creation of table, option to display table from homepage once table is created
+
+* BUGS
 
 - Can't do the same operation twice, e.g. shop for 1 item at Pathmark. First time works,
   second fails. Connection error is Errno::ECONNREFUSED at /shop.
@@ -14,6 +21,8 @@ http://sqa.stackexchange.com/questions/5833/connection-refused-error-when-runnin
 https://swdandruby.wordpress.com/2013/05/11/headless-gem-causes-errnoeconnrefused/
 
 Look into manually creating sessions with rand display ids...
+
+- looks like I didn't have to bother with this if I add a page.driver.quit() statement in the class
 
 =end
 
@@ -99,8 +108,9 @@ module Shopper
           scan_price(storename, item_name, m, item_price)
         end
         sleep 1
-      end
         page.driver.quit()
+        # moving this quit outside the method seems to have fixed it?
+      end
     end
   end
 
