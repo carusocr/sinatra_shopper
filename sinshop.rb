@@ -99,8 +99,9 @@ module Shopper
           scan_price(storename, item_name, m, item_price)
         end
         sleep 1
-      end
         page.driver.quit()
+        # moving this quit outside the method seems to have fixed it?
+      end
     end
   end
 
