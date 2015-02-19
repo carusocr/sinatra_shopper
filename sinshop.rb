@@ -9,6 +9,11 @@ Shopper home page should list...what?
 
 - Can't do the same operation twice, e.g. shop for 1 item at Pathmark. First time works,
   second fails. Connection error is Errno::ECONNREFUSED at /shop.
+http://sqa.stackexchange.com/questions/5833/connection-refused-error-when-running-selenium-with-chrome-and-firefox-drivers
+
+https://swdandruby.wordpress.com/2013/05/11/headless-gem-causes-errnoeconnrefused/
+
+Look into manually creating sessions with rand display ids...
 
 =end
 
@@ -69,6 +74,7 @@ module Shopper
   end
   class APS #SuperFresh and Pathmark
     include Capybara::DSL
+    Capybara.current_driver = :selenium #keeping it visual for now
     def get_results(store,pricelist)
       storename = store[/http:\/\/(.+?)\./,1]
       visit(store)
@@ -94,8 +100,7 @@ module Shopper
         end
         sleep 1
       end
-        #page.driver.quit()
-        page.driver.reset!()
+        page.driver.quit()
     end
   end
 
