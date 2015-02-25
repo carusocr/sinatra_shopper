@@ -11,6 +11,7 @@ Shopper home page should list...what?
 - cleaner format 
 - 'Load Usual Suspects' button
 - creation of table, option to display table from homepage once table is created
+- sortable table by price/item
 
 * BUGS
 
@@ -141,6 +142,7 @@ end
 post '/shop' do
   $pathmark = params['pathmark'].to_i
   $superfresh = params['superfresh'].to_i
+  $prices=[]
   shop_fer_stuff
   redirect '/'
 end
