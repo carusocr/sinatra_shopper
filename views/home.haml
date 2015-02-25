@@ -38,6 +38,18 @@
           %input{:type => "hidden", :name => "frogro", :value => 0}
           %input{:disabled=>"disabled", :type=>"checkbox", :name=>"frogro", :value=>1}
           Fresh Grocer (currently disabled)
-        %br
-        %br
+      %br
         %input{:type => "submit", :value => "Shop!"}
+      %br
+        %table.table.table-bordered
+          %tbody
+            %tr
+              %td Store
+              %td Item
+              %td Price
+            - $prices.each do |i|
+              %tr
+                %td=i[0]
+                %td=i[1]
+                %td=i[2]
+        %br
