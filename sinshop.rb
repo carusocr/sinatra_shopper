@@ -155,5 +155,6 @@ end
 
 post '/reset' do
   $search_items = []
+  $prices = []
   redirect '/'
 end
