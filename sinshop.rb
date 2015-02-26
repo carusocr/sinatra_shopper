@@ -12,6 +12,7 @@ Shopper home page should list...what?
 - 'Load Usual Suspects' button
 - creation of table, option to display table from homepage once table is created
 - sortable table by price/item
+- store choices need to persist in between addition of target items
 
 * BUGS
 
@@ -88,10 +89,11 @@ module Shopper
     def get_results(store,pricelist)
       storename = store[/http:\/\/(.+?)\./,1]
       visit(store)
+      page.driver.browser.manage.window.resize_to(1000,1000)
       page.driver.browser.switch_to.frame(0)
       $search_items.each do |m|
+        puts "looking for #{m}..."
         page.fill_in('txtSearch', :with => m)
-        puts "Looking for #{m}..."
         page.click_button('Search')
         sleep 1 #no sleep sometimes makes next part fail?
         if page.first(:xpath,"//div[contains(text(),'Sorry')]")
@@ -109,9 +111,8 @@ module Shopper
           scan_price(storename, item_name, m, item_price)
         end
         sleep 1
-        page.driver.quit()
-        # moving this quit outside the method seems to have fixed it?
       end
+      page.driver.quit()
     end
   end
 
@@ -149,5 +150,10 @@ end
 
 post '/' do
   $search_items << params[:item]
+  redirect '/'
+end
+
+post '/reset' do
+  $search_items = []
   redirect '/'
 end
