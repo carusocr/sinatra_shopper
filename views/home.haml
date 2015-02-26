@@ -20,6 +20,9 @@
               %tr
                 %td=i
       %br
+      %form{:role=>"form", :action=>"reset", :method=>"post"}
+        %input{:type=>"submit", :value=>"Clear Items"}
+      %br
   .container
     %h3 Choose Stores
     %form{:role => "form", :action=>"shop", :method=>"post"}
