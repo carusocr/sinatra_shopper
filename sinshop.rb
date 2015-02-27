@@ -7,16 +7,18 @@ Shopper home page should list...what?
 
 * FEATURES TO ADD *
 
-- 'Clear Items' button
+- 'Clear Items' button - DONE
 - cleaner format 
 - 'Load Usual Suspects' button
 - creation of table, option to display table from homepage once table is created
+  - changed this to display table on home page...need to clean up format. Color code by store and item.
 - sortable table by price/item
 - store choices need to persist in between addition of target items
 
 * BUGS
 
 - Can't do the same operation twice, e.g. shop for 1 item at Pathmark. First time works,
+* FIXED WITH APS BUT STILL PROBLEMATIC WITH FROGRO
   second fails. Connection error is Errno::ECONNREFUSED at /shop.
 http://sqa.stackexchange.com/questions/5833/connection-refused-error-when-running-selenium-with-chrome-and-firefox-drivers
 
@@ -37,9 +39,9 @@ $pathmark_url = 'http://pathmark.apsupermarket.com/view-circular?storenum=532#ad
 $pathmark_prices = Hash.new
 $superfresh_url = 'http://superfresh.apsupermarket.com/weekly-circular?storenum=747&brand=sf'
 $superfresh_prices = Hash.new
-$acme = 'http://acmemarkets.mywebgrocer.com/Circular/Philadelphia-10th-and-Reed/BE0473057/Weekly/2/1'
+$acme_url = 'http://acmemarkets.mywebgrocer.com/Circular/Philadelphia-10th-and-Reed/BE0473057/Weekly/2/1'
 $acme_prices = Hash.new
-$frogro = 'http://thefreshgrocer.shoprite.com/Circular/The-Fresh-Grocer-of-Walnut/E7E1123699/Weekly/2'
+$frogro_url = 'http://thefreshgrocer.shoprite.com/Circular/The-Fresh-Grocer-of-Walnut/E7E1123699/Weekly/2'
 $frogro_prices = Hash.new
 
 
@@ -76,7 +78,9 @@ module Shopper
             pricelist["#{item_name}"] = item_price
             scan_price(storename, item_name, m, item_price)
           end
+          sleep 1
         end
+        page.driver.quit()
       end
 
     end
@@ -134,6 +138,10 @@ def shop_fer_stuff
     shop = Shopper::APS.new
     shop.get_results($superfresh_url,$superfresh_prices)
   end
+  if $frogro == 1
+    shop = Shopper::AcmeFroGro.new
+    shop.get_results($frogro_url,$frogro_prices)
+  end
 end
 
 get '/' do
@@ -143,6 +151,7 @@ end
 post '/shop' do
   $pathmark = params['pathmark'].to_i
   $superfresh = params['superfresh'].to_i
+  $frogro = params['frogro'].to_i
   $prices=[]
   shop_fer_stuff
   redirect '/'

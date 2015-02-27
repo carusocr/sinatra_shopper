@@ -19,10 +19,8 @@
             - $search_items.each do |i|
               %tr
                 %td=i
-      %br
       %form{:role=>"form", :action=>"reset", :method=>"post"}
         %input{:type=>"submit", :value=>"Clear Items and Results"}
-      %br
   .container
     %h3 Choose Stores
     %form{:role => "form", :action=>"shop", :method=>"post"}
@@ -39,8 +37,8 @@
       .checkbox.disabled
         %label
           %input{:type => "hidden", :name => "frogro", :value => 0}
-          %input{:disabled=>"disabled", :type=>"checkbox", :name=>"frogro", :value=>1}
-          Fresh Grocer (currently disabled)
+          %input{:type=>"checkbox", :name=>"frogro", :value=>1}
+          Fresh Grocer
       %br
         %input{:type => "submit", :value => "Shop!"}
       %br
