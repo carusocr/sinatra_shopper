@@ -34,7 +34,18 @@ require 'sinatra'
 require 'haml'
 require 'capybara'
 
-Capybara.current_driver = :selenium #keeping it visual for now
+#switch to chrome
+#make it work with either...try chrome first then back to ff?
+#seems to work with FF on Linux...wtf?
+Capybara.register_driver :chrome do |app|
+  Capybara::Selenium::Driver.new(app, :browser => :chrome)
+end
+
+Capybara.javascript_driver = :chrome
+Capybara.current_driver = :chrome
+
+#Capybara.current_driver = :selenium #keeping it visual for now
+
 $pathmark_url = 'http://pathmark.apsupermarket.com/view-circular?storenum=532#ad'
 $pathmark_prices = Hash.new
 $superfresh_url = 'http://superfresh.apsupermarket.com/weekly-circular?storenum=747&brand=sf'
