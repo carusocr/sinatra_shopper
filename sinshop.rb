@@ -46,15 +46,12 @@ Capybara.current_driver = :chrome
 
 #Capybara.current_driver = :selenium #keeping it visual for now
 
-$pathmark_url = 'http://pathmark.apsupermarket.com/view-circular?storenum=532#ad'
-$pathmark_prices = Hash.new
-$superfresh_url = 'http://superfresh.apsupermarket.com/weekly-circular?storenum=747&brand=sf'
-$superfresh_prices = Hash.new
 $acme_url = 'http://acmemarkets.mywebgrocer.com/Circular/Philadelphia-10th-and-Reed/BE0473057/Weekly/2/1'
 $acme_prices = Hash.new
 $frogro_url = 'http://thefreshgrocer.shoprite.com/Circular/The-Fresh-Grocer-of-Walnut/E7E1123699/Weekly/2'
 $frogro_prices = Hash.new
-
+$shoprite = 'http://plan.shoprite.com/Circular/ShopRite-of-Oregon-Ave/977B652/Weekly/1'
+$shoprite_prices = Hash.new
 
 $search_items=[]
 $prices=[]
@@ -141,13 +138,13 @@ def scan_price(storename, item_name, target_item, item_price)
 end
 
 def shop_fer_stuff
-  if $pathmark == 1
-    shop = Shopper::APS.new
-    shop.get_results($pathmark_url,$pathmark_prices)
+  if $acme == 1
+    shop = Shopper::AcmeFroGro.new
+    shop.get_results($acme_url,$acme_prices)
   end
-  if $superfresh == 1
-    shop = Shopper::APS.new
-    shop.get_results($superfresh_url,$superfresh_prices)
+  if $shoprite == 1
+    shop = Shopper::AcmeFroGro.new
+    shop.get_results($shoprite_url,$shoprite_prices)
   end
   if $frogro == 1
     shop = Shopper::AcmeFroGro.new
@@ -160,8 +157,8 @@ get '/' do
 end
 
 post '/shop' do
-  $pathmark = params['pathmark'].to_i
-  $superfresh = params['superfresh'].to_i
+  $acme = params['acme'].to_i
+  $shoprite = params['shoprite'].to_i
   $frogro = params['frogro'].to_i
   $prices=[]
   shop_fer_stuff
