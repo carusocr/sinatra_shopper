@@ -57,17 +57,17 @@ $search_items=[]
 $prices=[]
 
 #how can I improve this structure?
+
 module Shopper
   class AcmeFroGro
     include Capybara::DSL
     def get_results(store, pricelist)
-    #this one is different....search based
       storename = store[/http:\/\/(.+?)\./,1]
-      searchterm = storename == 'acmemarkets' ? 'Search Weekly Ads' : 'Search Weekly Circular'
+      storename = 'shoprite' if storename == 'plan'
       visit(store)
       page.driver.browser.manage.window.resize_to(1000,1000)
       $search_items.each do |m|
-        page.fill_in(searchterm, :with => m)
+        page.fill_in("Search Weekly", :with => m) # works for both "Search Weekly Ads/Circular"
         page.click_button('GO')
         lastpage = page.has_link?('Next Page') ? page.first(:xpath,"//a[contains(@title,'Page')]")[:title][/ of (\d+)/,1].to_i : 0
         page.all(:xpath,"//div[contains(@id,'CircularListItem')]").each do |node|
@@ -86,46 +86,12 @@ module Shopper
             pricelist["#{item_name}"] = item_price
             scan_price(storename, item_name, m, item_price)
           end
-          sleep 1
         end
-        page.driver.quit()
       end
 
     end
 
  
-  end
-  class APS #SuperFresh and Pathmark
-    include Capybara::DSL
-    Capybara.current_driver = :selenium #keeping it visual for now
-    def get_results(store,pricelist)
-      storename = store[/http:\/\/(.+?)\./,1]
-      visit(store)
-      page.driver.browser.manage.window.resize_to(1000,1000)
-      page.driver.browser.switch_to.frame(0)
-      $search_items.each do |m|
-        puts "looking for #{m}..."
-        page.fill_in('txtSearch', :with => m)
-        page.click_button('Search')
-        sleep 1 #no sleep sometimes makes next part fail?
-        if page.first(:xpath,"//div[contains(text(),'Sorry')]")
-          puts "No results found for #{m}."
-          next
-        end
-        if page.first(:xpath,"//a[contains(@onClick,'showAll()')]")
-          page.execute_script "showAll()"
-        end
-        num_rows = page.first(:xpath,"//td[@class='pagenum']").text.match(/OF (\d+)/).captures
-        num_rows[0].to_i.times do |meat|
-          item_name =  page.find(:xpath, "//p[@id = 'itemName#{meat}']").text
-          item_price = page.find(:xpath, "//p[@id = 'itemPrice#{meat}']").text
-          pricelist["#{item_name}"] = item_price
-          scan_price(storename, item_name, m, item_price)
-        end
-        sleep 1
-      end
-      page.driver.quit()
-    end
   end
 
 end
