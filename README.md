@@ -1,6 +1,6 @@
 # Sinatra Shopper
 
-Uses Sinatra and Capybara to automate comparison shopping for groceries.
+Uses Sinatra and Capybara to automate comparison shopping for groceries. Eventual goal would be to make this into a simple app that could be provided to low-income families for use in automatically finding the best grocery shopping options on a week-by-week basis.
 
 ## Usage
 
