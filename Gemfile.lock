@@ -9,7 +9,7 @@ GEM
       xpath (~> 2.0)
     childprocess (0.5.5)
       ffi (~> 1.0, >= 1.0.11)
-    ffi (1.9.6)
+    ffi (1.11.1)
     haml (4.0.6)
       tilt
     mime-types (2.4.3)
